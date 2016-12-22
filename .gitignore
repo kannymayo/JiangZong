@@ -1,10 +1,2 @@
 /MaestroEasyExample/obj
-
-!/Sequencer/*
-!/Sequencer/
-
-/Usc/*
-!/Usc/
-
-/Usc/*
-!/UscCmd/
+/MaestroEasyExample/bin
