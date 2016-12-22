@@ -1,1 +1,10 @@
-MaestroEasyExample/obj
+/MaestroEasyExample/obj
+
+!/Sequencer/*
+!/Sequencer/
+
+/Usc/*
+!/Usc/
+
+/Usc/*
+!/UscCmd/
