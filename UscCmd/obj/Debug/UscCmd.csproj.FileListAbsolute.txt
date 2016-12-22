@@ -1,0 +1,12 @@
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\UscCmd.exe
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\UscCmd.pdb
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\Bytecode.dll
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\UsbWrapper.dll
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\Usc.dll
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\Sequencer.dll
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\Usc.pdb
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\UsbWrapper.xml
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\bin\Debug\Sequencer.pdb
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\obj\Debug\UscCmd.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\obj\Debug\UscCmd.exe
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\UscCmd\obj\Debug\UscCmd.pdb

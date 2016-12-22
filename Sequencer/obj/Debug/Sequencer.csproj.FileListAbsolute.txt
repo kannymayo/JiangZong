@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\Sequencer\bin\Debug\Sequencer.dll
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\Sequencer\bin\Debug\Sequencer.pdb
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\Sequencer\obj\Debug\Sequencer.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\Sequencer\obj\Debug\Sequencer.dll
+C:\Users\Administrator\Desktop\Personal project\pololu-usb-sdk-140604\pololu-usb-sdk\Maestro\Sequencer\obj\Debug\Sequencer.pdb
