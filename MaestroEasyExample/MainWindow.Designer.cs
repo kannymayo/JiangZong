@@ -28,17 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            
+            this.components = new System.ComponentModel.Container();
+            this.mainTextBox = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SuspendLayout();
-            
+            // 
+            // mainTextBox
+            // 
+            this.mainTextBox.Location = new System.Drawing.Point(12, 12);
+            this.mainTextBox.Multiline = true;
+            this.mainTextBox.Name = "mainTextBox";
+            this.mainTextBox.ReadOnly = true;
+            this.mainTextBox.Size = new System.Drawing.Size(423, 76);
+            this.mainTextBox.TabIndex = 0;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 115);
+            this.ClientSize = new System.Drawing.Size(447, 100);
+            this.Controls.Add(this.mainTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "MainWindow";
             this.Text = "MaestroEasyExample in C#";
             this.Load += new System.EventHandler(this.MainWindow_Load);
@@ -50,6 +65,8 @@
 
         #endregion
 
+        private System.Windows.Forms.TextBox mainTextBox;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 

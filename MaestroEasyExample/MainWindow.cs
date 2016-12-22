@@ -118,6 +118,7 @@ namespace Pololu.Usc.MaestroEasyExample
             {
                 // start recording
                 case Keys.D1:
+                    mainTextBox.AppendText("Recording started...\n");
                     _ar.startRecording();
                     _ar.record(DateTime.Now, e.KeyCode);
                     break;
@@ -126,7 +127,9 @@ namespace Pololu.Usc.MaestroEasyExample
                 case Keys.D5:
                     _ar.record(DateTime.Now, e.KeyCode);
                     _ar.endRecording();
+                    mainTextBox.AppendText("Recording ended...\n");
                     // immediatly playback
+                    mainTextBox.AppendText("Playback started...\n");
                     handPlayback(_ar);
                     break;
 
@@ -134,6 +137,7 @@ namespace Pololu.Usc.MaestroEasyExample
                 case Keys.D2:
                 case Keys.D3:
                 case Keys.D4:
+                    mainTextBox.AppendText("Key press detected: " + e.KeyCode.ToString() + "\n");
                     _ar.record(DateTime.Now, e.KeyCode);
                     handExec(e.KeyCode);
                     break;
