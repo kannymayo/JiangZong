@@ -29,6 +29,8 @@ namespace Pololu.Usc.MaestroEasyExample
     public partial class MainWindow : Form
     {
         private ActionRecorder _ar;
+        private bool _shouldPlaybackStop;
+        private int _targetBindingMode;
 
         public MainWindow()
         {
@@ -36,6 +38,13 @@ namespace Pololu.Usc.MaestroEasyExample
             KeyPreview = true;
 
             _ar = new ActionRecorder();
+            _shouldPlaybackStop = false;
+            _targetBindingMode = 1;
+            this.mode1RadioButton.Checked = true;
+
+            this.mode1RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
+            this.mode2RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
+            this.mode3RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
         }
         /// <summary>
         /// Attempts to set the target (width of pulses sent) of a channel.
@@ -107,18 +116,13 @@ namespace Pololu.Usc.MaestroEasyExample
             MessageBox.Show(stringBuilder.ToString(), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 // start recording
                 case Keys.D1:
-                    mainTextBox.AppendText("Recording started...\n");
+                    mainTextBox.AppendText("Recording started..." + Environment.NewLine);
                     _ar.startRecording();
                     _ar.record(DateTime.Now, e.KeyCode);
                     break;
@@ -127,19 +131,19 @@ namespace Pololu.Usc.MaestroEasyExample
                 case Keys.D5:
                     _ar.record(DateTime.Now, e.KeyCode);
                     _ar.endRecording();
-                    mainTextBox.AppendText("Recording ended...\n");
+                    mainTextBox.AppendText("Recording ended..." + Environment.NewLine);
                     // immediatly playback
-                    mainTextBox.AppendText("Playback started...\n");
-                    handPlayback(_ar);
+                    mainTextBox.AppendText("Playback started..." + Environment.NewLine);
+                    handPlayback(_ar, _targetBindingMode);
                     break;
 
                 // record time and key pressed
                 case Keys.D2:
                 case Keys.D3:
                 case Keys.D4:
-                    mainTextBox.AppendText("Key press detected: " + e.KeyCode.ToString() + "\n");
+                    mainTextBox.AppendText("Key press detected: " + e.KeyCode.ToString() + Environment.NewLine);
                     _ar.record(DateTime.Now, e.KeyCode);
-                    handExec(e.KeyCode);
+                    handExec(e.KeyCode, _targetBindingMode);
                     break;
                 // any other keys, just ignore
                 default:
@@ -147,59 +151,107 @@ namespace Pololu.Usc.MaestroEasyExample
             }
         }
 
-        private void handExec(Keys keyPressed)
+        private void handExec(Keys keyPressed, int targetBindingMode)
         {
+            int keyD2Target = 0;
+            int keyD3Target = 0;
+            int keyD4Target = 0;
+
+            switch (targetBindingMode)
+            {
+                case 1:
+                    keyD2Target = 1500 * 4;
+                    keyD3Target = 1000 * 4;
+                    keyD4Target = 1500 * 4;
+                    break;
+                case 2:
+                    keyD2Target = 1000 * 4;
+                    keyD3Target = 1500 * 4;
+                    keyD4Target = 1000 * 4;
+                    break;
+                case 3:
+                    keyD2Target = 1500 * 4;
+                    keyD3Target = 1500 * 4;
+                    keyD4Target = 1500 * 4;
+                    break;
+
+                default:
+                    break;
+            }
+
+
             if (keyPressed == Keys.D2)
             {
-                TrySetTarget(10, 2000 * 4);  // Set the target of channel 0 to 1000 microseconds.
-                TrySetTarget(11, 2000 * 4);
-                TrySetTarget(12, 2000 * 4);
-                TrySetTarget(13, 2000 * 4);
-                TrySetTarget(14, 2000 * 4);
-                TrySetTarget(15, 2000 * 4);
-                TrySetTarget(16, 2000 * 4);
-                TrySetTarget(17, 2000 * 4);
-                TrySetTarget(18, 2000 * 4);
-                TrySetTarget(19, 2000 * 4);
+                for(int i = 10; i < 20; i++)
+                {
+                    TrySetTarget((byte)i, (ushort)keyD2Target);
+                }
                 return;
             }
             if (keyPressed == Keys.D3)
             {
-                TrySetTarget(10, 1000 * 4);  // Set the target of channel 0 to 1000 microseconds.
-                TrySetTarget(11, 1000 * 4);
-                TrySetTarget(12, 1000 * 4);
-                TrySetTarget(13, 1000 * 4);
-                TrySetTarget(14, 1000 * 4);
-                TrySetTarget(15, 1000 * 4);
-                TrySetTarget(16, 1000 * 4);
-                TrySetTarget(17, 1000 * 4);
-                TrySetTarget(18, 1000 * 4);
-                TrySetTarget(19, 1000 * 4);
+                for (int i = 10; i < 20; i++)
+                {
+                    TrySetTarget((byte)i, (ushort)keyD3Target);
+                }
                 return;
             }
             if (keyPressed == Keys.D4)
             {
-                TrySetTarget(10, 2000 * 4);  // Set the target of channel 0 to 1000 microseconds.
-                TrySetTarget(11, 2000 * 4);
-                TrySetTarget(12, 2000 * 4);
-                TrySetTarget(13, 2000 * 4);
-                TrySetTarget(14, 2000 * 4);
-                TrySetTarget(15, 2000 * 4);
-                TrySetTarget(16, 2000 * 4);
-                TrySetTarget(17, 2000 * 4);
-                TrySetTarget(18, 2000 * 4);
-                TrySetTarget(19, 2000 * 4);
+                for (int i = 10; i < 20; i++)
+                {
+                    TrySetTarget((byte)i, (ushort)keyD4Target);
+                }
                 return;
             }
         }
-        private void handPlayback(ActionRecorder ar)
+        private void handPlayback(ActionRecorder ar, int mode)
         {
             HandFrame hf;
-            ar.prepPlayback();
-            while ( (hf = ar.getFrame()) != null )
+            while (!_shouldPlaybackStop)
             {
-                handExec(hf.action);
-                Thread.Sleep(hf.relTime);
+                hf = ar.getFrame();
+                // if the newly obtained frame is a valid one, reply it
+                if ( hf != null)
+                {
+                    handExec(hf.action, mode);
+                    Thread.Sleep(hf.relTime);
+                }
+                // if not invalid, aka we've looped beyond the last valid frame - which also means,
+                // a full iteration was completed, continue with the while loop, so that playback 
+                // will automatically reply
+            }
+        }
+
+        private void stopPlayback_Click(object sender, EventArgs e)
+        {
+            _shouldPlaybackStop = true;
+        }
+
+        private void modeSelectRadioBtnGrp_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            // Filter events fired by "uncheck"
+            if (radioButton.Checked)
+            {
+                switch (radioButton.Name)
+                {
+                    case ("mode1RadioButton"):
+                        mainTextBox.AppendText("mode1 selected" + Environment.NewLine);
+                        _targetBindingMode = 1;
+                        break;
+                    case ("mode2RadioButton"):
+                        mainTextBox.AppendText("mode2 selected" + Environment.NewLine);
+                        _targetBindingMode = 2;
+                        break;
+                    case ("mode3RadioButton"):
+                        mainTextBox.AppendText("mode3 selected" + Environment.NewLine);
+                        _targetBindingMode = 3;
+                        break;
+                    default:
+                        // do nothing
+                        break;
+                }
             }
         }
     }

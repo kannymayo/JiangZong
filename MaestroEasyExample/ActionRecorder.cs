@@ -15,14 +15,12 @@ namespace Pololu.Usc.MaestroEasyExample
 
         public ActionRecorder()
         {
-            _hasStarted     = false;
-            _hasEnded       = false;
-            _curFrameIndex  = 0;
-            _frames         = new List<HandFrame>();
+            reset();
         }
 
         public void startRecording()
         {
+            reset();
             _hasStarted = true;
         }
 
@@ -32,16 +30,14 @@ namespace Pololu.Usc.MaestroEasyExample
             calcRelTime();
         }
 
-        public void prepPlayback()
-        {
-            // Error control in future
-            _curFrameIndex = 0;
-        }
-
         public HandFrame getFrame()
         {
-            // return null after the last frame is read
-            if (_curFrameIndex >= _frames.Count) return null;
+            // After the last frame is read, reset iteration index and return null
+            if (_curFrameIndex >= _frames.Count)
+            {
+                _curFrameIndex = 0;
+                return null;
+            }
 
             else return _frames[_curFrameIndex++];
         }
@@ -54,7 +50,7 @@ namespace Pololu.Usc.MaestroEasyExample
             _frames.Add(new HandFrame(time, action));   
         }
 
-        // conver absolute time to relative time for each frame
+        // convert absolute time to relative time for each frame
         private void calcRelTime()
         {
             if (!_hasStarted) return;
@@ -65,6 +61,14 @@ namespace Pololu.Usc.MaestroEasyExample
             {
                 _frames[i].relTime = (int)(_frames[i+1].absTime - _frames[i].absTime).TotalMilliseconds;
             }
+        }
+
+        private void reset()
+        {
+            _hasStarted = false;
+            _hasEnded = false;
+            _curFrameIndex = 0;
+            _frames = new List<HandFrame>();
         }
 
         
