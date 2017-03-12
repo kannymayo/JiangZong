@@ -36,6 +36,7 @@
             this.mode2RadioButton = new System.Windows.Forms.RadioButton();
             this.mode1RadioButton = new System.Windows.Forms.RadioButton();
             this.modeSelectRadioBtnGrp = new System.Windows.Forms.Panel();
+            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.modeSelectRadioBtnGrp.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,6 +96,7 @@
             this.mode1RadioButton.TabStop = true;
             this.mode1RadioButton.Text = "mode1";
             this.mode1RadioButton.UseVisualStyleBackColor = true;
+            this.mode1RadioButton.CheckedChanged += new System.EventHandler(this.mode1RadioButton_CheckedChanged);
             // 
             // modeSelectRadioBtnGrp
             // 
@@ -134,6 +136,7 @@
         private System.Windows.Forms.RadioButton mode2RadioButton;
         private System.Windows.Forms.RadioButton mode1RadioButton;
         private System.Windows.Forms.Panel modeSelectRadioBtnGrp;
+        private System.IO.Ports.SerialPort serialPort1;
     }
 }
 

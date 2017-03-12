@@ -14,12 +14,13 @@
  *  Center to check what errors are occurring.
  */
 
-using Pololu.Usc;
+//using Pololu.Usc;
 using Pololu.UsbWrapper;
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
@@ -41,11 +42,23 @@ namespace Pololu.Usc.MaestroEasyExample
             _shouldPlaybackStop = false;
             _targetBindingMode = 1;
             this.mode1RadioButton.Checked = true;
+            // tcp
+            String serverAddr = "192.168.1.100";
+            int serverPort = 30015;
+            Socket soc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            System.Net.IPAddress addr = System.Net.IPAddress.Parse(serverAddr);
+            System.Net.IPEndPoint remoteEP = new System.Net.IPEndPoint(addr, serverPort);
+            soc.Connect(remoteEP);
+
+            //
+            byte[] firstMsg = System.Text.Encoding.ASCII.GetBytes("1");
+            soc.Send(firstMsg);
 
             this.mode1RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
             this.mode2RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
             this.mode3RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
         }
+       
         /// <summary>
         /// Attempts to set the target (width of pulses sent) of a channel.
         /// </summary>
@@ -160,19 +173,19 @@ namespace Pololu.Usc.MaestroEasyExample
             switch (targetBindingMode)
             {
                 case 1:
-                    keyD2Target = 1500 * 4;
-                    keyD3Target = 1000 * 4;
-                    keyD4Target = 1500 * 4;
+                    keyD2Target = 2000 * 4;
+                    keyD3Target = 1950 * 4;
+                    keyD4Target = 1555 * 4;
                     break;
                 case 2:
-                    keyD2Target = 1000 * 4;
-                    keyD3Target = 1500 * 4;
-                    keyD4Target = 1000 * 4;
+                    keyD2Target = 2000 * 4;
+                    keyD3Target = 1900 * 4;
+                    keyD4Target = 1555 * 4;
                     break;
                 case 3:
-                    keyD2Target = 1500 * 4;
-                    keyD3Target = 1500 * 4;
-                    keyD4Target = 1500 * 4;
+                    keyD2Target = 2000 * 4;
+                    keyD3Target = 1850 * 4;
+                    keyD4Target = 1555 * 4;
                     break;
 
                 default:
@@ -253,6 +266,11 @@ namespace Pololu.Usc.MaestroEasyExample
                         break;
                 }
             }
+        }
+
+        private void mode1RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
