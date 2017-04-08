@@ -27,6 +27,7 @@ using System.Threading;
 
 namespace Pololu.Usc.MaestroEasyExample
 {
+
     public partial class MainWindow : Form
     {
         private ActionRecorder _ar;
@@ -134,14 +135,14 @@ namespace Pololu.Usc.MaestroEasyExample
             switch (e.KeyCode)
             {
                 // start recording
-                case Keys.D1:
+                case Keys.R:
                     mainTextBox.AppendText("Recording started..." + Environment.NewLine);
                     _ar.startRecording();
                     _ar.record(DateTime.Now, e.KeyCode);
                     break;
 
                 // end recording
-                case Keys.D5:
+                case Keys.T:
                     _ar.record(DateTime.Now, e.KeyCode);
                     _ar.endRecording();
                     mainTextBox.AppendText("Recording ended..." + Environment.NewLine);
@@ -151,9 +152,9 @@ namespace Pololu.Usc.MaestroEasyExample
                     break;
 
                 // record time and key pressed
-                case Keys.D2:
-                case Keys.D3:
-                case Keys.D4:
+                case Keys.Q:
+                case Keys.W:
+                case Keys.E:
                     mainTextBox.AppendText("Key press detected: " + e.KeyCode.ToString() + Environment.NewLine);
                     _ar.record(DateTime.Now, e.KeyCode);
                     handExec(e.KeyCode, _targetBindingMode);
@@ -166,56 +167,27 @@ namespace Pololu.Usc.MaestroEasyExample
 
         private void handExec(Keys keyPressed, int targetBindingMode)
         {
-            int keyD2Target = 0;
-            int keyD3Target = 0;
-            int keyD4Target = 0;
-
-            switch (targetBindingMode)
+            // translate mode & keypress to indices
+            int idx_keyPressed = 0;
+            int idx_targetBindingMode;
+            if (keyPressed == Keys.Q)
             {
-                case 1:
-                    keyD2Target = 2000 * 4;
-                    keyD3Target = 1950 * 4;
-                    keyD4Target = 1555 * 4;
-                    break;
-                case 2:
-                    keyD2Target = 2000 * 4;
-                    keyD3Target = 1900 * 4;
-                    keyD4Target = 1555 * 4;
-                    break;
-                case 3:
-                    keyD2Target = 2000 * 4;
-                    keyD3Target = 1850 * 4;
-                    keyD4Target = 1555 * 4;
-                    break;
-
-                default:
-                    break;
+                idx_keyPressed = 0;
             }
-
-
-            if (keyPressed == Keys.D2)
+            if (keyPressed == Keys.W)
             {
-                for(int i = 10; i < 20; i++)
-                {
-                    TrySetTarget((byte)i, (ushort)keyD2Target);
-                }
-                return;
+                idx_keyPressed = 1;
             }
-            if (keyPressed == Keys.D3)
+            if (keyPressed == Keys.E)
             {
-                for (int i = 10; i < 20; i++)
-                {
-                    TrySetTarget((byte)i, (ushort)keyD3Target);
-                }
-                return;
+                idx_keyPressed = 2;
             }
-            if (keyPressed == Keys.D4)
+            idx_targetBindingMode = targetBindingMode--;
+
+            // send commands to 10 fingers
+            for (int i = 10; i < 20; i++)
             {
-                for (int i = 10; i < 20; i++)
-                {
-                    TrySetTarget((byte)i, (ushort)keyD4Target);
-                }
-                return;
+                TrySetTarget((byte)i, (ushort)Constant.arTargetMKF[idx_targetBindingMode, idx_keyPressed,i]);
             }
         }
         private void handPlayback(ActionRecorder ar, int mode)
@@ -232,7 +204,7 @@ namespace Pololu.Usc.MaestroEasyExample
                 }
                 // if not invalid, aka we've looped beyond the last valid frame - which also means,
                 // a full iteration was completed, continue with the while loop, so that playback 
-                // will automatically reply
+                // will automatically replay
             }
         }
 
@@ -272,5 +244,145 @@ namespace Pololu.Usc.MaestroEasyExample
         {
 
         }
+    }
+
+    public class Constant
+    {
+        /**
+         * 3D array that conatains targets for
+         *      3 Modes
+         *      3 Keypresses
+         *      10 fingers
+         * Accessed by arTargetMKF[x][y][z] while
+         *      x being the mode,
+         *      y being the keypress,
+         *      z being the finger
+         */
+        public static readonly int[,,] arTargetMKF = new int[3, 3, 10]
+        {
+            {
+                // Mode 1, Keypress 1
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                },
+                // Mode 1, Keypress 2
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                },
+                // Mode 1, Keypress 3
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                }
+            },
+            {
+                // Mode 2, Keypress 1
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                },
+                // Mode 2, Keypress 2
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                },
+                // Mode 2, Keypress 3
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                }
+            },
+            {
+                // Mode 3, Keypress 1
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                },
+                // Mode 3, Keypress 2
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                },
+                // Mode 3, Keypress 3
+                {
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000,
+                    7000
+                }
+            }
+        };
     }
 }
