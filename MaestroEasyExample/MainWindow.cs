@@ -187,7 +187,7 @@ namespace Pololu.Usc.MaestroEasyExample
             // send commands to 10 fingers
             for (int i = 10; i < 20; i++)
             {
-                TrySetTarget((byte)i, (ushort)Constant.arTargetMKF[idx_targetBindingMode, idx_keyPressed,i]);
+                TrySetTarget((byte)i, (ushort)Constant.arTargetMKF[idx_targetBindingMode, idx_keyPressed, i-10]);
             }
         }
         private void handPlayback(ActionRecorder ar, int mode)
