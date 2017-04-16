@@ -77,6 +77,11 @@ namespace Pololu.Usc.MaestroEasyExample
             _maestroSerialPort.Parity = Parity.None;
             _maestroSerialPort.DataBits = 8;
             _maestroSerialPort.StopBits = StopBits.One;
+
+
+
+
+
         }
 
         void TrySetTargetOverSerial(Byte channel, UInt16 target)
@@ -224,7 +229,7 @@ namespace Pololu.Usc.MaestroEasyExample
             {
                 idx_keyPressed = 2;
             }
-            idx_targetBindingMode = targetBindingMode--;
+            idx_targetBindingMode = targetBindingMode - 1;
 
             // send commands to 10 fingers
             for (int i = 10; i < 20; i++)
@@ -303,12 +308,12 @@ namespace Pololu.Usc.MaestroEasyExample
             {
                 // Mode 1, Keypress 1
                 {
-                    7000,
-                    7000,
-                    7000,
-                    7000,
-                    7000,
-                    7000,
+                    1000,
+                    2000,
+                    3000,
+                    4000,
+                    5000,
+                    6000,
                     7000,
                     7000,
                     7000,
