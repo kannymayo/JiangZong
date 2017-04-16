@@ -20,7 +20,9 @@ using Pololu.UsbWrapper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Ports;
 using System.Net.Sockets;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
@@ -33,6 +35,7 @@ namespace Pololu.Usc.MaestroEasyExample
         private ActionRecorder _ar;
         private bool _shouldPlaybackStop;
         private int _targetBindingMode;
+        private SerialPort _maestroSerialPort;
 
         public MainWindow()
         {
@@ -44,20 +47,59 @@ namespace Pololu.Usc.MaestroEasyExample
             _targetBindingMode = 1;
             this.mode1RadioButton.Checked = true;
             // tcp
-            String serverAddr = "192.168.1.100";
-            int serverPort = 30015;
-            Socket soc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            System.Net.IPAddress addr = System.Net.IPAddress.Parse(serverAddr);
-            System.Net.IPEndPoint remoteEP = new System.Net.IPEndPoint(addr, serverPort);
-            soc.Connect(remoteEP);
+//            String serverAddr = "192.168.1.100";
+//            int serverPort = 30015;
+//            Socket soc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+//            System.Net.IPAddress addr = System.Net.IPAddress.Parse(serverAddr);
+//            System.Net.IPEndPoint remoteEP = new System.Net.IPEndPoint(addr, serverPort);
+//            soc.Connect(remoteEP);
 
             //
-            byte[] firstMsg = System.Text.Encoding.ASCII.GetBytes("1");
-            soc.Send(firstMsg);
+//            byte[] firstMsg = System.Text.Encoding.ASCII.GetBytes("1");
+//            soc.Send(firstMsg);
 
+            // shouldn't these be in designer.cs?
             this.mode1RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
             this.mode2RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
             this.mode3RadioButton.CheckedChanged += new System.EventHandler(this.modeSelectRadioBtnGrp_CheckedChanged);
+
+            // scan
+            mainTextBox.AppendText("Scanning port names:" + Environment.NewLine);
+            foreach (string p in SerialPort.GetPortNames())
+            {
+                mainTextBox.AppendText("    " + p + Environment.NewLine);
+            }
+
+            // configure serial connection
+            _maestroSerialPort = new SerialPort(
+                Constant.MaestroSerialPortName,
+                Constant.MaestroSerialBaudRate);
+            _maestroSerialPort.Parity = Parity.None;
+            _maestroSerialPort.DataBits = 8;
+            _maestroSerialPort.StopBits = StopBits.One;
+        }
+
+        void TrySetTargetOverSerial(Byte channel, UInt16 target)
+        {
+            try
+            {
+                _maestroSerialPort.Open();
+                // convert to byte command codes
+                byte[] commands = new byte[4];
+                commands[0] = 0x84;
+                commands[1] = (byte) channel;
+                commands[2] = Convert.ToByte(target & 0x7F);
+                commands[3] = Convert.ToByte((target >> 7) & 0x7F);
+
+                // send command
+                _maestroSerialPort.Write(commands, 0, commands.Length);
+
+                _maestroSerialPort.Close();
+            }
+            catch (Exception e)
+            {
+                mainTextBox.AppendText(e + Environment.NewLine);
+            }
         }
        
         /// <summary>
@@ -187,7 +229,7 @@ namespace Pololu.Usc.MaestroEasyExample
             // send commands to 10 fingers
             for (int i = 10; i < 20; i++)
             {
-                TrySetTarget((byte)i, (ushort)Constant.arTargetMKF[idx_targetBindingMode, idx_keyPressed, i-10]);
+                TrySetTargetOverSerial((byte)i, (ushort)Constant.arTargetMKF[idx_targetBindingMode, idx_keyPressed, i-10]);
             }
         }
         private void handPlayback(ActionRecorder ar, int mode)
@@ -239,15 +281,13 @@ namespace Pololu.Usc.MaestroEasyExample
                 }
             }
         }
-
-        private void mode1RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 
     public class Constant
     {
+        public static readonly string MaestroSerialPortName = "COM1";
+
+        public static readonly int MaestroSerialBaudRate = 9600;
         /**
          * 3D array that conatains targets for
          *      3 Modes

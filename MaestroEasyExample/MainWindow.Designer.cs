@@ -96,7 +96,6 @@
             this.mode1RadioButton.TabStop = true;
             this.mode1RadioButton.Text = "mode1";
             this.mode1RadioButton.UseVisualStyleBackColor = true;
-            this.mode1RadioButton.CheckedChanged += new System.EventHandler(this.mode1RadioButton_CheckedChanged);
             // 
             // modeSelectRadioBtnGrp
             // 
